@@ -83,9 +83,10 @@ function scoreBand(score) {
 
 function renderChips(listEl, items) {
   listEl.innerHTML = "";
-  items.forEach((skill) => {
+  items.forEach((skill, i) => {
     const li = document.createElement("li");
     li.textContent = skill;
+    li.style.setProperty("--i", i);
     listEl.appendChild(li);
   });
 }
@@ -146,3 +147,16 @@ fileInput.addEventListener("change", (e) => handleFile(e.target.files[0]));
 );
 dropzone.addEventListener("drop", (e) => handleFile(e.dataTransfer.files[0]));
 $("reset").addEventListener("click", reset);
+
+// Fade sections in as they scroll into view
+const revealObserver = new IntersectionObserver(
+  (entries) =>
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("in");
+        revealObserver.unobserve(entry.target);
+      }
+    }),
+  { threshold: 0.15 }
+);
+document.querySelectorAll(".reveal").forEach((el) => revealObserver.observe(el));
