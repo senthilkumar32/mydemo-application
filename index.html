@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>0 to Shipped Resume Parser</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="nav">
+    <div class="container nav-inner">
+      <a href="#" class="logo">
+        <span class="logo-mark">0→S</span>
+        <span>0 to Shipped</span>
+      </a>
+      <nav class="nav-links">
+        <a href="#how">How it works</a>
+        <a href="#upload" class="btn btn-small">Try it free</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- Hero -->
+    <section class="hero">
+      <div class="container hero-inner">
+        <span class="pill">Resume Parser · Mock Preview</span>
+        <h1>From <span class="accent">0</span> to <span class="accent">Shipped</span>.<br />Know your resume score in seconds.</h1>
+        <p class="lead">Upload your PDF resume and instantly see your score, the skills recruiters will spot, and the skills you're missing.</p>
+        <a href="#upload" class="btn btn-large">Upload your resume</a>
+      </div>
+    </section>
+
+    <!-- Upload -->
+    <section id="upload" class="section">
+      <div class="container narrow">
+        <label for="file-input" id="dropzone" class="dropzone">
+          <input type="file" id="file-input" accept="application/pdf,.pdf" hidden />
+          <div class="dz-icon" aria-hidden="true">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><polyline points="9 15 12 12 15 15"/></svg>
+          </div>
+          <p class="dz-title">Drag &amp; drop your resume here</p>
+          <p class="dz-sub">or <span class="link">browse files</span> · PDF only, up to 5 MB</p>
+        </label>
+        <p id="error" class="error" role="alert" hidden></p>
+
+        <!-- Loading -->
+        <div id="loading" class="card loading" hidden>
+          <div class="spinner" aria-hidden="true"></div>
+          <div>
+            <p class="loading-title">Analyzing <span id="loading-file">resume.pdf</span></p>
+            <p id="loading-step" class="muted">Extracting text…</p>
+          </div>
+        </div>
+
+        <!-- Results -->
+        <div id="results" class="results" hidden>
+          <div class="card score-card">
+            <div class="score-ring" id="score-ring" style="--value: 0">
+              <svg viewBox="0 0 120 120" aria-hidden="true">
+                <circle class="ring-bg" cx="60" cy="60" r="52" />
+                <circle class="ring-fg" id="ring-fg" cx="60" cy="60" r="52" />
+              </svg>
+              <div class="score-text">
+                <span id="score-value">0</span>
+                <small>/ 100</small>
+              </div>
+            </div>
+            <div class="score-meta">
+              <p class="muted small" id="result-file">resume.pdf</p>
+              <h2 id="score-label">Good</h2>
+              <p class="muted" id="score-summary">Your resume covers most core skills.</p>
+              <button id="reset" class="btn btn-ghost">Upload another resume</button>
+            </div>
+          </div>
+
+          <div class="skills-grid">
+            <div class="card">
+              <h3><span class="dot dot-green"></span>Skills present <span class="count" id="present-count">0</span></h3>
+              <ul class="chips" id="present-list"></ul>
+            </div>
+            <div class="card">
+              <h3><span class="dot dot-red"></span>Skills missing <span class="count" id="missing-count">0</span></h3>
+              <ul class="chips" id="missing-list"></ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- How it works -->
+    <section id="how" class="section section-alt">
+      <div class="container">
+        <h2 class="section-title">How it works</h2>
+        <div class="steps">
+          <div class="step">
+            <span class="step-num">1</span>
+            <h3>Upload</h3>
+            <p class="muted">Drop in your resume as a PDF.</p>
+          </div>
+          <div class="step">
+            <span class="step-num">2</span>
+            <h3>Parse</h3>
+            <p class="muted">We extract your experience and match it against in-demand skills.</p>
+          </div>
+          <div class="step">
+            <span class="step-num">3</span>
+            <h3>Ship</h3>
+            <p class="muted">Get your score, see the gaps, and fix them before you apply.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <p class="muted small">© 2026 0 to Shipped Resume Parser · Mock design — no data leaves your browser.</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
