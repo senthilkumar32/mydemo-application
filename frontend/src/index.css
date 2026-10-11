@@ -238,7 +238,28 @@ ul, ol { list-style: none; }
 .dropzone:hover { background: var(--paper); border-color: var(--ink); }
 .dropzone.is-over { background: var(--paper); border-style: solid; border-color: var(--ink); }
 .dropzone:focus-within { outline: 2px solid var(--ink); outline-offset: 3px; }
-.dropzone-title { font-size: var(--t-xl); font-weight: 600; }
+.dropzone.has-file { border-style: solid; border-color: var(--ink); background: var(--paper); }
+.dropzone.is-invalid { border-color: var(--red-pen); }
+.dropzone-title { font-size: var(--t-xl); font-weight: 600; overflow-wrap: anywhere; }
+
+.check-form { display: grid; gap: 28px; }
+.check-label { display: block; margin-bottom: 8px; font-weight: 600; }
+.jd-input {
+  display: block;
+  width: 100%;
+  min-height: 180px;
+  padding: 14px 16px;
+  border: 1.5px solid #9aa3b5;
+  border-radius: 2px;
+  background: var(--paper);
+  font: inherit; font-size: var(--t-sm); line-height: 1.55; color: var(--ink);
+  resize: vertical;
+}
+.jd-input::placeholder { color: var(--pencil); }
+.jd-input:focus { outline: none; border-color: var(--ink); box-shadow: 0 0 0 3px rgba(255, 228, 92, 0.8); }
+.jd-input[aria-invalid="true"] { border-color: var(--red-pen); }
+.check-actions { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+.check-note { font-size: var(--t-sm); color: var(--pencil); }
 .dropzone-sub { color: var(--pencil); }
 
 .error {
@@ -289,8 +310,7 @@ ul, ol { list-style: none; }
 }
 .how-steps li::before { content: counter(step); font-weight: 700; font-size: var(--t-lg); line-height: 1.3; }
 .skills-title { font-size: var(--t-lg); margin: 10px 0 18px; }
-.skills-index { columns: 2; column-gap: 32px; color: var(--pencil); }
-.skills-index li { padding: 3px 0; break-inside: avoid; }
+.skills-groups li { padding: 10px 0; border-bottom: 1px solid var(--rule); color: var(--pencil); }
 
 /* Footer */
 .site-footer { padding: 28px 0 40px; border-top: 1px solid var(--rule); font-size: var(--t-sm); color: var(--pencil); }
@@ -343,28 +363,6 @@ ul, ol { list-style: none; }
   cursor: pointer;
 }
 .auth-close:hover { background: var(--desk); color: var(--ink); }
-
-/* Follows Google's sign-in button guidance: white, logo on the left, "Continue with Google". */
-.btn-google {
-  display: flex; align-items: center; justify-content: center; gap: 12px;
-  width: 100%;
-  padding: 11px 16px;
-  border: 1px solid #747775;
-  border-radius: 4px;
-  background: #fff;
-  color: #1f1f1f;
-  font: 500 var(--t-md) / 1.2 system-ui, -apple-system, "Segoe UI", sans-serif;
-  cursor: pointer;
-}
-.btn-google:hover { background: #f6f8fc; }
-.auth-note { margin-top: 8px; font-size: var(--t-xs); color: var(--pencil); }
-
-.auth-divider {
-  display: flex; align-items: center; gap: 12px;
-  margin: 22px 0 18px;
-  font-size: var(--t-sm); color: var(--pencil);
-}
-.auth-divider::before, .auth-divider::after { content: ""; flex: 1; height: 1px; background: var(--rule); }
 
 .field { margin-bottom: 16px; }
 .field label { display: block; margin-bottom: 4px; font-size: var(--t-sm); font-weight: 600; }

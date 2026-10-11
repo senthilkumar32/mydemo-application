@@ -35,9 +35,9 @@ export default function Hero() {
       <div className="container hero-grid">
         <div className="hero-copy">
           <h1>See your resume the way a recruiter does.</h1>
-          <p className="lead">Drop in your PDF and we mark it up like a reviewer would: the skills that stand out, the ones you're missing, and a score out of 100.</p>
+          <p className="lead">Drop in your PDF, paste the job you want, and we mark it up like a reviewer would: the skills the job asks for that you have, the ones you're missing, and a score out of 100.</p>
           <a href="#check" className="btn btn-light">Check my resume</a>
-          <p className="fine-print">Free to use, no account needed. Your file stays in this browser.</p>
+          <p className="fine-print">Free to use, no account needed. We keep the text of your resume, never the file.</p>
         </div>
         <SampleSheet />
       </div>
