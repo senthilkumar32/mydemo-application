@@ -5,7 +5,7 @@ import { compare } from "./compare.service.js";
 // Read the resume, compare it with the JD, and save the result.
 export async function createAnalysis({ userId, file, jobDescription }) {
   const resumeText = await extractPdfText(file.buffer);
-  const result = compare(resumeText, jobDescription);
+  const result = await compare(resumeText, jobDescription);
 
   const analysis = await Analysis.create({
     user: userId ?? undefined,

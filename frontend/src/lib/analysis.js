@@ -3,7 +3,8 @@
 
 export const LOADING_STEPS = ["Reading your resume", "Picking out what the job asks for", "Matching skills", "Adding up your score"];
 export const STEP_MS = 600;
-const MAX_SIZE = 5 * 1024 * 1024;
+// Vercel caps request bodies at 4.5 MB, so keep the file comfortably under it.
+const MAX_SIZE = 4 * 1024 * 1024;
 export const MAX_JD_LENGTH = 20000;
 
 // Returns an error message, or null if the file is acceptable.
@@ -12,7 +13,7 @@ export function validateFile(file) {
     return `${file.name} isn't a PDF. Export your resume as a PDF and drop it in again.`;
   }
   if (file.size > MAX_SIZE) {
-    return `${file.name} is over 5 MB. Remove large images or compress the PDF, then try again.`;
+    return `${file.name} is over 4 MB. Remove large images or compress the PDF, then try again.`;
   }
   return null;
 }

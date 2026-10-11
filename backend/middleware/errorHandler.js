@@ -12,7 +12,7 @@ export function errorHandler(err, req, res, next) {
   }
   if (err instanceof multer.MulterError) {
     const message = err.code === "LIMIT_FILE_SIZE"
-      ? "Your resume is over 5 MB. Remove large images or compress the PDF, then try again."
+      ? "Your resume is over 4 MB. Remove large images or compress the PDF, then try again."
       : "We couldn't read that upload. Try choosing the file again.";
     return res.status(400).json({ message, field: "resume" });
   }

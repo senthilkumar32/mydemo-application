@@ -18,6 +18,12 @@ app.use("/api", notFound);
 app.use(errorHandler);
 
 await connectDB();
-app.listen(config.port, () => {
-  console.log(`API listening on http://localhost:${config.port}`);
-});
+
+// On Vercel the exported app runs as a function; locally it listens on a port.
+if (!process.env.VERCEL) {
+  app.listen(config.port, () => {
+    console.log(`API listening on http://localhost:${config.port}`);
+  });
+}
+
+export default app;

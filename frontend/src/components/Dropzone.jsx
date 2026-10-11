@@ -47,7 +47,7 @@ export default function Dropzone({ file, onFile, invalid }) {
       ) : (
         <>
           <span className="dropzone-title">Drop your resume PDF here</span>
-          <span className="dropzone-sub">or <span className="text-link">choose a file</span>. PDF, up to 5 MB.</span>
+          <span className="dropzone-sub">or <span className="text-link">choose a file</span>. PDF, up to 4 MB.</span>
         </>
       )}
     </label>

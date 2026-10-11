@@ -14,4 +14,7 @@ export const config = {
   jwtExpiresIn: process.env.JWT_EXPIRES_IN || "7d",
   // Comma-separated list of origins allowed to call the API from a browser.
   corsOrigins: (process.env.CORS_ORIGINS || "http://localhost:5173").split(",").map((s) => s.trim()),
+  // Optional. Without a key, resumes are scored by keyword matching instead of AI.
+  cohereApiKey: process.env.COHERE_API_KEY || "",
+  cohereModel: process.env.COHERE_MODEL || "command-a-plus-05-2026",
 };

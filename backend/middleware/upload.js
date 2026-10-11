@@ -5,7 +5,8 @@ import { HttpError } from "../utils.js";
 // we store the extracted text, never the file.
 export const uploadResume = multer({
   storage: multer.memoryStorage(),
-  limits: { fileSize: 5 * 1024 * 1024, files: 1 },
+  // Vercel rejects request bodies over 4.5 MB before they reach Express.
+  limits: { fileSize: 4 * 1024 * 1024, files: 1 },
   fileFilter: (req, file, cb) => {
     const isPdf = file.mimetype === "application/pdf" || file.originalname.toLowerCase().endsWith(".pdf");
     if (isPdf) return cb(null, true);
