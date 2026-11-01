@@ -24,7 +24,7 @@ You need Node.js 22.9 or newer and a MongoDB database (local, or a free MongoDB 
 ```sh
 cd backend
 npm install
-cp .env.example .env     # then set MONGODB_URI, JWT_SECRET and COHERE_API_KEY
+cp .env.example .env     # then set MONGODB_URI, JWT_SECRET and OPENAI_API_KEY
 npm run dev
 ```
 
@@ -50,11 +50,11 @@ In development, Vite forwards every `/api` request to the backend, so no extra s
 
 Errors come back as `{ message, field? }`, where `field` names the form input the message belongs to.
 
-## AI scoring (Cohere)
+## AI scoring (OpenAI)
 
-When `COHERE_API_KEY` is set in `backend/.env`, [backend/service/cohere.service.js](backend/service/cohere.service.js) sends the resume text and the JD to Cohere's chat API. It asks for a JSON reply, `{ score, present, missing }`, checked against a schema. The model picks out the skills the job asks for, treats equivalents as matches (for example "Postgres" for PostgreSQL), weights required skills above nice-to-haves, and ignores soft skills. Set `COHERE_MODEL` to use a model other than `command-a-plus-05-2026`.
+When `OPENAI_API_KEY` is set in `backend/.env`, [backend/service/openai.service.js](backend/service/openai.service.js) sends the resume text and the JD to OpenAI's Chat Completions API. It asks for a JSON reply, `{ score, present, missing }`, enforced by a strict JSON schema. The model picks out the skills the job asks for, treats equivalents as matches (for example "Postgres" for PostgreSQL), weights required skills above nice-to-haves, and ignores soft skills. Set `OPENAI_MODEL` to use a model other than `gpt-4o`.
 
-If there's no key, or Cohere fails (bad key, used-up allowance, rate limit, timeout), [backend/service/compare.service.js](backend/service/compare.service.js) falls back to keyword matching against `skills.js` and logs why. Each analysis records which engine scored it (`cohere:<model>` or `keyword-v1`). Analyses also store the resume text and the JD, so past ones can be re-scored without another upload.
+If there's no key, or OpenAI fails (bad key, used-up quota, rate limit, timeout), [backend/service/compare.service.js](backend/service/compare.service.js) falls back to keyword matching against `skills.js` and logs why. Each analysis records which engine scored it (`openai:<model>` or `keyword-v1`). Analyses also store the resume text and the JD, so past ones can be re-scored without another upload.
 
 The key stays on the server. The browser only ever talks to this API.
 
@@ -65,6 +65,6 @@ The key stays on the server. The browser only ever talks to this API.
 - `frontend` (Vite) is public at `/`.
 - `backend` (Express) is public at `/api/*` and receives the full path, for example `/api/analyses`.
 
-Both share one domain, so the browser calls `/api` directly and no CORS setup is needed. In the Vercel project settings, add the variables from `backend/.env.example` (`MONGODB_URI`, `JWT_SECRET`, `COHERE_API_KEY` and so on). If you use MongoDB Atlas, allow connections from anywhere (`0.0.0.0/0`), because Vercel functions don't have fixed IPs. Resume uploads are capped at 4 MB because Vercel limits request bodies to 4.5 MB.
+Both share one domain, so the browser calls `/api` directly and no CORS setup is needed. In the Vercel project settings, add the variables from `backend/.env.example` (`MONGODB_URI`, `JWT_SECRET`, `OPENAI_API_KEY` and so on). If you use MongoDB Atlas, allow connections from anywhere (`0.0.0.0/0`), because Vercel functions don't have fixed IPs. Resume uploads are capped at 4 MB because Vercel limits request bodies to 4.5 MB.
 
 Run `vercel dev` to try the deployed setup locally. `npm run dev` still works as before.

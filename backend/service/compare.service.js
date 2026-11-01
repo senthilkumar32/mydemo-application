@@ -1,21 +1,21 @@
 import { SKILLS } from "./skills.js";
 import { HttpError, escapeRegExp } from "../utils.js";
 import { config } from "../config/index.js";
-import { cohereCompare } from "./cohere.service.js";
+import { openaiCompare } from "./openai.service.js";
 
 // Two engines, same return shape ({ score, present, missing, engine }):
-// - Cohere AI, used when COHERE_API_KEY is set.
-// - Keyword matching against skills.js, used without a key or when Cohere fails,
+// - OpenAI, used when OPENAI_API_KEY is set.
+// - Keyword matching against skills.js, used without a key or when OpenAI fails,
 //   so an outage or a used-up allowance never blocks a user.
 export const KEYWORD_ENGINE = "keyword-v1";
 
 export async function compare(resumeText, jobDescription) {
-  if (config.cohereApiKey) {
+  if (config.openaiApiKey) {
     try {
-      const result = await cohereCompare(resumeText, jobDescription);
-      return { ...result, engine: `cohere:${config.cohereModel}` };
+      const result = await openaiCompare(resumeText, jobDescription);
+      return { ...result, engine: `openai:${config.openaiModel}` };
     } catch (err) {
-      console.warn(`Cohere comparison failed (${err.message}); falling back to keyword matching.`);
+      console.warn(`OpenAI comparison failed (${err.message}); falling back to keyword matching.`);
     }
   }
   return keywordCompare(resumeText, jobDescription);
