@@ -1,13 +1,24 @@
 import mongoose from "mongoose";
 import { config } from "./index.js";
 
-export async function connectDB() {
-  try {
-    await mongoose.connect(config.mongoUri, { dbName: config.mongoDbName });
-  } catch (err) {
-    console.error(`Couldn't connect to MongoDB: ${err.message}`);
-    console.error("Check MONGODB_URI in backend/.env (see .env.example for the format).");
-    process.exit(1);
-  }
-  console.log(`Connected to MongoDB (database: ${mongoose.connection.name})`);
+let connecting = null;
+// The last connection failure, shown by /api/health.
+export let dbError = null;
+
+// Connects once and reuses the connection. A failed attempt is retried on the
+// next call, so a fixed setting or Atlas allow-list takes effect without a redeploy.
+export function connectDB() {
+  if (mongoose.connection.readyState === 1) return Promise.resolve();
+  connecting ??= mongoose
+    .connect(config.mongoUri, { dbName: config.mongoDbName, serverSelectionTimeoutMS: 8000 })
+    .then(() => {
+      dbError = null;
+      console.log(`Connected to MongoDB (database: ${mongoose.connection.name})`);
+    })
+    .catch((err) => {
+      dbError = err.message;
+      connecting = null;
+      throw err;
+    });
+  return connecting;
 }

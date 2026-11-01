@@ -1,8 +1,13 @@
 import { PDFParse } from "pdf-parse";
+import { CanvasFactory, getData } from "pdf-parse/worker";
 import { HttpError } from "../utils.js";
 
+// Serverless bundles drop pdf.js's worker file, so load it from the copy
+// inlined in pdf-parse/worker (which also polyfills DOMMatrix for Node).
+PDFParse.setWorker(getData());
+
 export async function extractPdfText(buffer) {
-  const parser = new PDFParse({ data: buffer });
+  const parser = new PDFParse({ data: buffer, CanvasFactory });
   let text;
   try {
     ({ text } = await parser.getText());
