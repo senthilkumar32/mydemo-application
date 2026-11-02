@@ -7,5 +7,6 @@ const router = Router();
 router.post("/signup", auth.signUp);
 router.post("/signin", auth.signIn);
 router.get("/me", requireAuth, auth.me);
+router.patch("/me", requireAuth, auth.updateMe);
 
 export default router;

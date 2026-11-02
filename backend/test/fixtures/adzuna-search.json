@@ -1,0 +1,30 @@
+{
+  "count": 3,
+  "results": [
+    {
+      "id": "4815162342",
+      "title": "Senior <strong>React</strong> Developer",
+      "description": "We are hiring a <b>React</b> developer with TypeScript &amp; Node.js experience. Remote friendly&nbsp;team.",
+      "company": { "display_name": "Acme Corp" },
+      "location": { "display_name": "Austin, Travis County" },
+      "redirect_url": "https://www.adzuna.com/details/4815162342",
+      "created": "2026-10-28T09:15:00Z",
+      "salary_min": 120000,
+      "salary_max": 150000
+    },
+    {
+      "id": 1234567,
+      "title": "Data Engineer",
+      "description": "Build pipelines in Python and AWS.",
+      "company": { "display_name": "Globex" },
+      "location": { "display_name": "Denver, Colorado" },
+      "redirect_url": "https://www.adzuna.com/details/1234567",
+      "created": "2026-10-30T12:00:00Z"
+    },
+    {
+      "id": "missing-url",
+      "title": "Incomplete listing",
+      "description": "No redirect_url, so it is dropped."
+    }
+  ]
+}

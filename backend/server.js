@@ -4,12 +4,21 @@ import { config, missingEnv } from "./config/index.js";
 import { connectDB, dbError } from "./config/db.js";
 import authRoutes from "./routes/auth.routes.js";
 import analysisRoutes from "./routes/analysis.routes.js";
+import jobRunRoutes from "./routes/jobRun.routes.js";
+import cronRoutes from "./routes/cron.routes.js";
 import { errorHandler, notFound } from "./middleware/errorHandler.js";
+import { jobMatchingHealth } from "./service/jobRun.service.js";
 import { HttpError } from "./utils.js";
 
 const app = express();
 app.use(cors({ origin: config.corsOrigins }));
 app.use(express.json({ limit: "100kb" }));
+
+// The pages are served by Vite (or Vercel's frontend service), not by this API.
+// Locally, point anyone who opens the API's root at the app instead of "Cannot GET /".
+app.get("/", (req, res) => {
+  res.type("text").send("This is the Profile Analyzer API. Open the app at http://localhost:5173 (run `npm run dev` from the project root). API status: /api/health");
+});
 
 // Reports what's wrong with the setup, so problems can be found without the server logs.
 app.get("/api/health", async (req, res) => {
@@ -18,7 +27,6 @@ app.get("/api/health", async (req, res) => {
   }
   try {
     await connectDB();
-    res.json({ ok: true });
   } catch {
     res.status(503).json({
       ok: false,
@@ -26,6 +34,9 @@ app.get("/api/health", async (req, res) => {
       detail: dbError,
     });
   }
+  // Job matching is optional: its state is reported but never makes the API unhealthy.
+  const jobMatching = await jobMatchingHealth().catch((err) => ({ problem: `Couldn't read job matching status: ${err.message}` }));
+  res.json({ ok: true, jobMatching });
 });
 
 // Every other route needs the settings and the database.
@@ -41,6 +52,8 @@ app.use("/api", async (req, res, next) => {
 
 app.use("/api/auth", authRoutes);
 app.use("/api/analyses", analysisRoutes);
+app.use("/api/job-runs", jobRunRoutes);
+app.use("/api/cron", cronRoutes);
 
 app.use("/api", notFound);
 app.use(errorHandler);

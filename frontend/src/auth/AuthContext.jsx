@@ -43,6 +43,12 @@ export function AuthProvider({ children }) {
     setUser(null);
   };
 
+  // Daily job matches on/off. Throws ApiError so the caller can show it.
+  const setJobAlerts = async (enabled) => {
+    const { user } = await api("/auth/me", { method: "PATCH", json: { jobAlerts: enabled } });
+    setUser(user);
+  };
+
   const value = {
     user,
     dialog,
@@ -51,6 +57,7 @@ export function AuthProvider({ children }) {
     signUp,
     signIn,
     signOut,
+    setJobAlerts,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

@@ -1,0 +1,27 @@
+{
+  "job-count": 2,
+  "jobs": [
+    {
+      "id": 1900001,
+      "url": "https://remotive.com/remote-jobs/software-dev/senior-react-developer-1900001",
+      "title": "Senior React Developer",
+      "company_name": "Acme Corp",
+      "category": "Software Development",
+      "tags": ["react", "typescript"],
+      "job_type": "full_time",
+      "publication_date": "2026-10-29T08:00:00",
+      "candidate_required_location": "USA Only",
+      "salary": "$120k - $150k",
+      "description": "<p>Join us to build <strong>React</strong> apps in TypeScript.</p>"
+    },
+    {
+      "id": 1900002,
+      "url": "https://remotive.com/remote-jobs/data/data-engineer-1900002",
+      "title": "Data Engineer",
+      "company_name": "Initech",
+      "candidate_required_location": "",
+      "publication_date": "2026-10-20T08:00:00",
+      "description": "Python, AWS and Docker."
+    }
+  ]
+}

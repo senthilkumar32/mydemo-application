@@ -15,4 +15,16 @@ export const config = {
   // Optional. Without a key, resumes are scored by keyword matching instead of AI.
   openaiApiKey: process.env.OPENAI_API_KEY || "",
   openaiModel: process.env.OPENAI_MODEL || "gpt-4o",
+  // Job matching: which sources the agent searches (comma-separated) and their keys.
+  jobProviders: (process.env.JOB_PROVIDERS || "adzuna,remotive").split(",").map((s) => s.trim()).filter(Boolean),
+  adzunaAppId: process.env.ADZUNA_APP_ID || "",
+  adzunaAppKey: process.env.ADZUNA_APP_KEY || "",
+  // Adzuna searches one country per request, by its two-letter code (us, gb, in, ...).
+  adzunaCountry: (process.env.ADZUNA_COUNTRY || "us").toLowerCase(),
+  // The most jobs one run scores against the resume; each can be an OpenAI call.
+  jobAgentMaxScored: Number(process.env.JOB_AGENT_MAX_SCORED) || 25,
+  // Job searches one user (or one IP, when signed out) can start in 24 hours.
+  jobRunsPerDay: Number(process.env.JOB_RUNS_PER_DAY) || 10,
+  // Vercel Cron sends this as a Bearer token; the cron route rejects anything else.
+  cronSecret: process.env.CRON_SECRET || "",
 };

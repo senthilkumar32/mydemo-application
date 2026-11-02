@@ -22,3 +22,9 @@ export async function signIn(req, res) {
 export async function me(req, res) {
   res.json({ user: await authService.getUser(req.userId) });
 }
+
+// JSON: { jobAlerts } — the only setting a user can change for now.
+export async function updateMe(req, res) {
+  if (typeof req.body.jobAlerts !== "boolean") throw new HttpError(400, "Choose whether to get daily job matches.", "jobAlerts");
+  res.json({ user: await authService.updateUser(req.userId, { jobAlerts: req.body.jobAlerts }) });
+}

@@ -35,7 +35,7 @@ const matchers = SKILLS.map(({ name, aliases, exactName }) => {
   return { name, patterns };
 });
 
-const skillsIn = (text) => matchers.filter((m) => m.patterns.some((p) => p.test(text))).map((m) => m.name);
+export const skillsIn = (text) => matchers.filter((m) => m.patterns.some((p) => p.test(text))).map((m) => m.name);
 
 function keywordCompare(resumeText, jobDescription) {
   const wanted = skillsIn(jobDescription);

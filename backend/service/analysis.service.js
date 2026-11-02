@@ -3,6 +3,7 @@ import { extractPdfText } from "./pdf.service.js";
 import { compare } from "./compare.service.js";
 
 // Read the resume, compare it with the JD, and save the result.
+// Returns the document; the controller sends its public view.
 export async function createAnalysis({ userId, file, jobDescription }) {
   const resumeText = await extractPdfText(file.buffer);
   const result = await compare(resumeText, jobDescription);
@@ -14,7 +15,7 @@ export async function createAnalysis({ userId, file, jobDescription }) {
     jobDescription,
     ...result,
   });
-  return analysis.toPublic();
+  return analysis;
 }
 
 export async function listAnalyses(userId, limit = 20) {

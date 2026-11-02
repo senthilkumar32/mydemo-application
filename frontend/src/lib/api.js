@@ -28,8 +28,8 @@ export class ApiError extends Error {
   }
 }
 
-export async function api(path, { method = "GET", json, form } = {}) {
-  const headers = {};
+export async function api(path, { method = "GET", json, form, headers: extraHeaders } = {}) {
+  const headers = { ...extraHeaders };
   const auth = token.get();
   if (auth) headers.Authorization = `Bearer ${auth}`;
   if (json) headers["Content-Type"] = "application/json";
@@ -50,3 +50,18 @@ export async function api(path, { method = "GET", json, form } = {}) {
   }
   return data;
 }
+
+// Job searches. Anonymous users prove a run is theirs with the token it came with.
+const runHeaders = (runToken) => (runToken ? { "X-Run-Token": runToken } : undefined);
+
+export const startJobRun = ({ analysisId, location, remoteOnly }, runToken) =>
+  api("/job-runs", { method: "POST", json: { analysisId, location, remoteOnly }, headers: runHeaders(runToken) });
+
+// `since` is the cursor from the previous call: only newer matches come back.
+export const getJobRun = (id, { since, runToken } = {}) =>
+  api(`/job-runs/${encodeURIComponent(id)}${since ? `?since=${encodeURIComponent(since)}` : ""}`, { headers: runHeaders(runToken) });
+
+export const cancelJobRun = (id, runToken) =>
+  api(`/job-runs/${encodeURIComponent(id)}/cancel`, { method: "POST", headers: runHeaders(runToken) });
+
+export const getLatestJobRun = () => api("/job-runs/latest");

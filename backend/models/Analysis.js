@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { searchProfileSchema } from "./SearchProfile.js";
 
 // One resume-vs-JD comparison. The extracted text is kept so the AI step
 // (added later) can re-run on past analyses without another upload.
@@ -13,6 +14,8 @@ const analysisSchema = new mongoose.Schema(
     missing: [String],
     // Which comparison produced this result, e.g. "keyword-v1" now, an AI model later.
     engine: { type: String, required: true },
+    // Built by the job-match agent on its first run, then reused.
+    searchProfile: searchProfileSchema,
   },
   { timestamps: true }
 );

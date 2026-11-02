@@ -36,6 +36,12 @@ export async function signIn({ email, password }) {
   return session(user);
 }
 
+export async function updateUser(id, changes) {
+  const user = await User.findByIdAndUpdate(id, { $set: changes }, { returnDocument: "after" });
+  if (!user) throw new HttpError(401, "Your session has ended. Sign in again.");
+  return user.toPublic();
+}
+
 export async function getUser(id) {
   const user = await User.findById(id);
   if (!user) throw new HttpError(401, "Your session has ended. Sign in again.");
