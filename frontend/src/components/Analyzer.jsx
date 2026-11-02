@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { LOADING_STEPS, MAX_JD_LENGTH, STEP_MS, validateFile, validateJobDescription } from "../lib/analysis";
 import { api, getLatestJobRun } from "../lib/api";
 import { useAuth } from "../auth/AuthContext";
@@ -21,6 +21,25 @@ export default function Analyzer() {
   const [jobSearch, setJobSearch] = useState({ jobRun: null, jobRunError: null });
   // A signed-in user's most recent job search, shown when they come back.
   const [latestRun, setLatestRun] = useState(null);
+  // Who the page is showing results for. Bumped when that person signs out,
+  // so a check still in flight for them never lands on the next person's page.
+  const shownFor = useRef({ userId: user?.id, session: 0 });
+
+  // Signing out (or switching accounts) clears the last check: the resume,
+  // its score and its job matches belonged to the previous user. Signing in
+  // keeps a check made while signed out, since it was made by the same person.
+  useEffect(() => {
+    const previous = shownFor.current.userId;
+    shownFor.current.userId = user?.id;
+    if (!previous || previous === user?.id) return;
+    shownFor.current.session += 1;
+    setFile(null);
+    setJobDescription("");
+    setErrors({});
+    setChecking(false);
+    setResult(null);
+    setJobSearch({ jobRun: null, jobRunError: null });
+  }, [user?.id]);
 
   useEffect(() => {
     setLatestRun(null);
@@ -62,6 +81,8 @@ export default function Analyzer() {
     form.append("resume", file);
     form.append("jobDescription", jobDescription);
 
+    const session = shownFor.current.session;
+    const stillShown = () => shownFor.current.session === session;
     setChecking(true);
     try {
       // Let the steps play through even when the server answers instantly.
@@ -69,12 +90,13 @@ export default function Analyzer() {
         api("/analyses", { method: "POST", form }),
         wait(STEP_MS * LOADING_STEPS.length),
       ]);
+      if (!stillShown()) return;
       setJobSearch({ jobRun, jobRunError });
       setResult(analysis);
     } catch (err) {
-      setErrors({ [err.field ?? "form"]: err.message });
+      if (stillShown()) setErrors({ [err.field ?? "form"]: err.message });
     } finally {
-      setChecking(false);
+      if (stillShown()) setChecking(false);
     }
   };
 
